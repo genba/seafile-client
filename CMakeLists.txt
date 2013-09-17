@@ -32,6 +32,7 @@ SET(moc_headers
   src/ui/create-repo-dialog.h
   src/ui/settings-dialog.h
   src/ui/download-repo-dialog.h
+  src/ui/repo-details-dialog.h
   src/ui/cloud-view.h
   src/ui/tray-icon.h
   src/ui/repo-tree-model.h
@@ -49,6 +50,7 @@ SET(ui_files
   ui/create-repo-dialog.ui
   ui/settings-dialog.ui
   ui/download-repo-dialog.ui
+  ui/repo-details-dialog.ui
   ui/init-seafile-dialog.ui
   ui/cloud-view.ui
   ui/clone-tasks-dialog.ui
@@ -122,6 +124,7 @@ SET(seafile_client_sources
   src/ui/settings-dialog.cpp
   src/ui/create-repo-dialog.cpp
   src/ui/download-repo-dialog.cpp
+  src/ui/repo-details-dialog.cpp
   src/ui/tray-icon.cpp
   src/ui/cloud-view.cpp
   src/utils/rsa.cpp

@@ -12,6 +12,7 @@
 #include "rpc/local-repo.h"
 #include "download-repo-dialog.h"
 #include "clone-tasks-dialog.h"
+#include "repo-details-dialog.h"
 #include "cloud-view.h"
 #include "repo-item.h"
 #include "repo-item-delegate.h"
@@ -64,6 +65,7 @@ QMenu* RepoTreeView::prepareContextMenu(const RepoItem *item)
     }
 
     menu->addAction(view_on_web_action_);
+    menu->addAction(show_detail_action_);
 
     return menu;
 }
@@ -74,6 +76,7 @@ void RepoTreeView::updateActions(const RepoItem *item)
         download_action_->setEnabled(false);
         open_local_folder_action_->setEnabled(false);
         view_on_web_action_->setEnabled(false);
+        show_detail_action_->setEnabled(false);
         return;
     }
 
@@ -89,6 +92,9 @@ void RepoTreeView::updateActions(const RepoItem *item)
 
     view_on_web_action_->setEnabled(true);
     view_on_web_action_->setData(item->repo().id);
+
+    show_detail_action_->setEnabled(true);
+    show_detail_action_->setData(QVariant::fromValue(item->repo()));
 }
 
 QStandardItem* RepoTreeView::getRepoItem(const QModelIndex &index) const
@@ -107,9 +113,9 @@ QStandardItem* RepoTreeView::getRepoItem(const QModelIndex &index) const
 
 void RepoTreeView::createActions()
 {
-    show_detail_action_ = new QAction(tr("&Show details"), this);
+    show_detail_action_ = new QAction(tr("&Show library details"), this);
     show_detail_action_->setIcon(awesome->icon(icon_info_sign));
-    show_detail_action_->setStatusTip(tr("Download this library"));
+    show_detail_action_->setStatusTip(tr("Show details of the current selected library"));
     show_detail_action_->setIconVisibleInMenu(true);
     connect(show_detail_action_, SIGNAL(triggered()), this, SLOT(showRepoDetail()));
 
@@ -145,6 +151,9 @@ void RepoTreeView::downloadRepo()
 
 void RepoTreeView::showRepoDetail()
 {
+    ServerRepo repo = qvariant_cast<ServerRepo>(show_detail_action_->data());
+    RepoDetailsDialog dialog(repo, this);
+    dialog.exec();
 }
 
 void RepoTreeView::openLocalFolder()
@@ -232,6 +241,7 @@ std::vector<QAction*> RepoTreeView::getToolBarActions()
 
     actions.push_back(download_action_);
     actions.push_back(open_local_folder_action_);
+    actions.push_back(show_detail_action_);
     actions.push_back(view_on_web_action_);
 
     return actions;
