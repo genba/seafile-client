@@ -170,7 +170,8 @@ void RepoItemDelegate::paintRepoItem(QPainter *painter,
     bool hover = false;
     bool selected = false;
     if (option.state & (QStyle::State_HasFocus | QStyle::State_Selected)) {
-        backBrush = option.palette.brush(QPalette::Highlight);
+        // backBrush = option.palette.brush(QPalette::Highlight);
+        backBrush = QColor("gray");
         foreColor = option.palette.color(QPalette::HighlightedText);
         selected = true;
 
@@ -195,7 +196,8 @@ void RepoItemDelegate::paintRepoItem(QPainter *painter,
             opt.backgroundBrush = backBrush;
     }
     painter->save();
-    style->drawPrimitive(QStyle::PE_PanelItemViewItem, &opt, painter, 0);
+    // style->drawPrimitive(QStyle::PE_PanelItemViewItem, &opt, painter, 0);
+    painter->fillRect(option.rect, backBrush);
     painter->restore();
 
     // Paint repo icon
