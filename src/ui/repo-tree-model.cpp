@@ -265,6 +265,8 @@ void RepoTreeModel::refreshRepoItem(RepoItem *item, void *data)
             clone_task = tasks.at(i);
             if (clone_task.repo_id == item->repo().id) {
                 item->setCloneProgress(clone_task.state_str);
+                QModelIndex index = indexFromItem(item);
+                emit dataChanged(index,index);
             }
         }
     } else {
