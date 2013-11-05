@@ -238,6 +238,10 @@ void RepoTreeModel::refreshLocalRepos()
     if (!seafApplet->mainWindow()->isVisible()) {
         return;
     }
+
+    tasks.clear();
+    seafApplet->rpcClient()->getCloneTasks(&tasks);
+
     forEachRepoItem(&RepoTreeModel::refreshRepoItem, NULL);
 }
 
@@ -252,7 +256,19 @@ void RepoTreeModel::refreshRepoItem(RepoItem *item, void *data)
         item->setLocalRepo(local_repo);
         QModelIndex index = indexFromItem(item);
         emit dataChanged(index,index);
-
         // qDebug("repo %s is changed\n", toCStr(item->repo().name));
     }
+
+    CloneTask clone_task;
+    if (!local_repo.isValid()) {
+        for (size_t i=0; i < tasks.size(); ++i) {
+            clone_task = tasks.at(i);
+            if (clone_task.repo_id == item->repo().id) {
+                item->setCloneProgress(clone_task.state_str);
+            }
+        }
+    } else {
+        item->setCloneProgress("");
+    }
+
 }

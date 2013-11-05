@@ -220,10 +220,18 @@ void RepoItemDelegate::paintRepoItem(QPainter *painter,
     QRect repo_desc_rect(repo_desc_pos, QSize(kRepoNameWidth, kRepoNameHeight));
     painter->setPen(selected ? foreColor : foreColor.lighter(150));
     painter->setFont(zoomFont(painter->font(), 0.8));
-    painter->drawText(repo_desc_rect,
-                      Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap,
-                      fitTextToWidth(translateCommitTime(repo.mtime), option.font, kRepoNameWidth),
-                      &repo_desc_rect);
+    QString clone_progress = item->getCloneProgress();
+    if (clone_progress != "") {
+        painter->drawText(repo_desc_rect,
+                          Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap,
+                          fitTextToWidth(clone_progress, option.font, kRepoNameWidth),
+                          &repo_desc_rect);
+    } else {
+        painter->drawText(repo_desc_rect,
+                          Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap,
+                          fitTextToWidth(translateCommitTime(repo.mtime), option.font, kRepoNameWidth),
+                          &repo_desc_rect);
+    }
     painter->restore();
 
     // Paint repo status icon

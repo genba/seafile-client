@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <QStandardItemModel>
-
+#include "rpc/clone-task.h"
 class QModelIndex;
 
 class ServerRepo;
@@ -65,6 +65,8 @@ private:
     QTimer *refresh_local_timer_;
 
     RepoTreeView *tree_view_;
+
+    std::vector<CloneTask> tasks;
 };
 
 #endif // SEAFILE_CLIENT_REPO_TREE_MODEL_H
