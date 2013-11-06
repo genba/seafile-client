@@ -6,6 +6,9 @@
 #include "api/requests.h"
 #include "login-dialog.h"
 
+const QString kDefaultServerAddr1 = "https://seacloud.cc";
+const QString kDefaultServerAddr2 = "https://cloud.seafile.com";
+
 LoginDialog::LoginDialog(QWidget *parent) : QDialog(parent)
 {
     setupUi(this);
@@ -16,6 +19,9 @@ LoginDialog::LoginDialog(QWidget *parent) : QDialog(parent)
 
     mStatusText->setText("");
     mLogo->setPixmap(QPixmap(":/images/seafile-32.png"));
+    mServerAddr->addItem(kDefaultServerAddr1);
+    mServerAddr->addItem(kDefaultServerAddr2);
+    mServerAddr->setCurrentIndex(-1);
 
     connect(mSubmitBtn, SIGNAL(clicked()), this, SLOT(doLogin()));
 
@@ -68,7 +74,7 @@ void LoginDialog::onSslErrors(QNetworkReply* reply, const QList<QSslError>& erro
 
 bool LoginDialog::validateInputs()
 {
-    QString serverAddr = mServerAddr->text();
+    QString serverAddr = mServerAddr->itemText(mServerAddr->currentIndex());
     QString protocol;
     QUrl url;
 
